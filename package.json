@@ -12,7 +12,9 @@
   "license": "ISC",
   "dependencies": {
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-bootstrap": "^2.5.0",
+    "react-dom": "^18.2.0",
+    "redux": "^4.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.2.2",
