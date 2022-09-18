@@ -26,7 +26,7 @@ class Generation extends Component {
   };
 
   fetchNextGeneration = () => {
-    this.fetchGeneration();
+    this.props.fetchGeneration();
 
     let delay =
       new Date(this.props.generation.expiration).getTime() -
@@ -63,10 +63,20 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    dispatchGeneration: (generation) =>
-      dispatch(generationActionCreator(generation)),
+    fetchGeneration: () => {
+      fetchGeneration(dispatch);
+    },
   };
 };
-const componentConnector = connect(mapStateToProps, mapDispatchToProps);
+
+const fetchGeneration = () => (dispatch) => {
+  return fetch('http://localhost:3000/generation')
+    .then((response) => response.json())
+    .then((json) => {
+      dispatch(generationActionCreator(json.generation));
+    })
+    .catch((error) => console.error('error', error));
+};
+const componentConnector = connect(mapStateToProps, { fetchGeneration });
 
 export default componentConnector(Generation);
