@@ -5,13 +5,13 @@ import { render } from 'react-dom';
 import thunk from 'redux-thunk';
 import Generation from './components/Generation';
 import Dragon from './components/Dragon';
-import { generationReducer } from './reducers';
+import rootReducer from './reducers';
 import './index.css';
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const store = createStore(
-  generationReducer,
+  rootReducer,
   composeEnhancers(applyMiddleware(thunk))
 );
 
