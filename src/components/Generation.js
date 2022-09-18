@@ -1,13 +1,9 @@
 import React, { Component } from 'react';
-
-const DEFAULT_GENERATION = { generationId: '', expiration: '' };
+import { connect } from 'react-redux';
+import { generationActionCreator } from '../actions/generation';
 
 const MINIMUM_DELAY = 3000;
 class Generation extends Component {
-  state = {
-    generation: { generation: DEFAULT_GENERATION },
-  };
-
   timer = null;
 
   componentDidMount() {
@@ -18,21 +14,11 @@ class Generation extends Component {
     clearTimeout(this.timer);
   }
 
-  fetchGeneration = () => {
-    fetch(`http://localhost:3000/generation`)
-      .then((response) => response.json())
-      .then((json) => {
-        console.log('json', json);
-        this.setState({ generation: json.generation });
-      })
-      .catch((error) => console.error('error', error));
-  };
-
   fetchNextGeneration = () => {
     this.fetchGeneration();
 
     let delay =
-      new Date(this.state.generation.expiration).getTime() -
+      new Date(this.props.generation.expiration).getTime() -
       new Date().getTime();
 
     if (delay < MINIMUM_DELAY) {
@@ -45,7 +31,9 @@ class Generation extends Component {
   };
 
   render() {
-    const { generation } = this.state;
+    console.log('this.props', this.props);
+
+    const { generation } = this.props;
 
     return (
       <div>
@@ -56,4 +44,28 @@ class Generation extends Component {
   }
 }
 
-export default Generation;
+const mapStateToProps = (state) => {
+  const generation = state.generation;
+
+  return { generation };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    dispatchGeneration: (generation) =>
+      dispatch(generationActionCreator(generation)),
+    fetchGeneration: () => fetchGeneration(dispatch),
+  };
+};
+
+const fetchGeneration = (dispatch) => {
+  return fetch('http://localhost:3000/generation')
+    .then((response) => response.json())
+    .then((json) => {
+      dispatch(generationActionCreator(json.generation));
+    })
+    .catch((error) => console.error('error', error));
+};
+const componentConnector = connect(mapStateToProps, mapDispatchToProps);
+
+export default componentConnector(Generation);
