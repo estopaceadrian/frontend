@@ -1,5 +1,6 @@
-import generation from './generation';
+import account from './account';
 import dragon from './dragon';
+import generation from './generation';
 import { combineReducers } from 'redux';
 
-export default combineReducers({ generation, dragon });
+export default combineReducers({ account, dragon, generation });
