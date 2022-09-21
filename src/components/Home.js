@@ -22,6 +22,8 @@ class Home extends Component {
 
         <hr />
         <Link to={'/account-dragons'}>Account Dragons</Link>
+        <hr />
+        <Link to={'/public-dragons'}>Public Dragons</Link>
       </div>
     );
   }

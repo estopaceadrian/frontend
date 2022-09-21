@@ -3,6 +3,7 @@ import dragon from './dragon';
 import generation from './generation';
 import accountDragons from './accountDragons';
 import accountInfo from './accountInfo';
+import publicDragons from './publicDragons';
 import { combineReducers } from 'redux';
 
 export default combineReducers({
@@ -11,4 +12,5 @@ export default combineReducers({
   generation,
   accountDragons,
   accountInfo,
+  publicDragons,
 });

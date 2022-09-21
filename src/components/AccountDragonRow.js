@@ -8,7 +8,31 @@ class AccountDragonRow extends Component {
     nickname: this.props.dragon.nickname,
     isPublic: this.props.dragons.isPublic,
     saleValue: this.props.dragons.saleValue,
+    sireValue: this.state.sireValue,
     edit: false,
+  };
+
+  get SaveButton() {
+    return <Button>Save</Button>;
+  }
+  get EditButton() {
+    return <Button onClick={this.toggleEdit}>Edit</Button>;
+  }
+
+  updateSaleValue = (event) => {
+    this.setState({ saleValue: event.target.value });
+  };
+
+  updateSireValue = (event) => {
+    this.setState({ sireValue: event.target.value });
+  };
+
+  updateIsPublic = (event) => {
+    this.setState({ isPublic: event.target.checked });
+  };
+
+  updateNickname = (event) => {
+    this.setState({ nickname: event.target.value });
   };
 
   toggleEdit = () => {
@@ -22,6 +46,9 @@ class AccountDragonRow extends Component {
       body: JSON.stringify({
         dragonId: this.props.dragon.dragonId,
         nickname: this.state.nickname,
+        isPublic: this.state.isPublic,
+        saleValue: this.state.saleValue,
+        sireValue: this.state.sireValue,
       }),
     })
       .then((response) => response.json())
@@ -35,27 +62,6 @@ class AccountDragonRow extends Component {
       .catch((error) => alert(error.message));
   };
 
-  get SaveButton() {
-    return <Button>Save</Button>;
-  }
-  get EditButton() {
-    return <Button onClick={this.toggleEdit}>Edit</Button>;
-  }
-
-  updateSaleValue = (event) => {
-    this.setState({ saleValue: event.target.value });
-  };
-  updateIsPublic = (event) => {
-    this.setState({ isPublic: event.target.value });
-  };
-
-  updateNickname = (event) => {
-    this.setState({ nickname: event.target.value });
-  };
-
-  toggleEdit = (event) => {
-    this.setState({ edit: !this.state.edit });
-  };
   render() {
     return (
       <div>
@@ -76,6 +82,17 @@ class AccountDragonRow extends Component {
               disabled={!this.state.edit}
               value={this.state.saleValue}
               onChange={this.updateSaleValue}
+              className="account-dragon-row-input"
+            />
+          </span>
+          <span>
+            Sire Value:{' '}
+            <input
+              type="number"
+              disabled={!this.state.edit}
+              value={this.state.sireValue}
+              onChange={this.updateSireValue}
+              className="account-dragon-row-input"
             />
           </span>
           <span>
