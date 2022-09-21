@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Button, FormGroup, FormControl } from 'react-bootstrap';
-import { signup } from '../actions/account';
+import { signup, login } from '../actions/account';
 import fetchStates from '../reducers/fetchStates';
 
 class AuthForm extends Component {
-  state = { username: ' ', password: '' };
+  state = { username: '', password: '', buttonClicked: false };
 
   updateUsername = (event) => {
     this.setState({ username: event.target.value });
@@ -16,16 +16,24 @@ class AuthForm extends Component {
   };
 
   signup = () => {
+    this.setState({ buttonClicked: true });
     const { username, password } = this.state;
+
     this.props.signup({ username, password });
   };
 
   login = () => {
-    console.log('this.state', this.state);
+    this.setState({ buttonClicked: true });
+    const { username, password } = this.state;
+
+    this.props.login({ username, password });
   };
 
   get Error() {
-    if (this.props.account.status === fetchStates.error) {
+    if (
+      this.setState.buttonClicked &&
+      this.props.account.status === fetchStates.error
+    ) {
       return <div>{this.props.account.message} </div>;
     }
   }
@@ -34,7 +42,6 @@ class AuthForm extends Component {
     return (
       <div>
         <h2>Dragon Stack</h2>
-
         <FormGroup>
           <FormControl
             type="text"
@@ -51,13 +58,11 @@ class AuthForm extends Component {
             onChange={this.updatePassword}
           />
         </FormGroup>
-        <FormGroup>
-          <div>
-            <Button onClick={this.login}>Log In</Button>
-            <span>or</span>
-            <Button onClick={this.signup}>Sign Up</Button>
-          </div>
-        </FormGroup>
+        <div>
+          <Button onClick={this.login}>Log In</Button>
+          <span> or </span>
+          <Button onClick={this.signup}>Sign Up</Button>
+        </div>
         <br />
         {this.Error}
       </div>
@@ -65,4 +70,6 @@ class AuthForm extends Component {
   }
 }
 
-export default connect(({ account }) => ({ account }), { signup })(AuthForm);
+export default connect(({ account }) => ({ account }), { signup, login })(
+  AuthForm
+);
